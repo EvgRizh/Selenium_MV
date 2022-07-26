@@ -17,21 +17,23 @@ articuls = [
             "30063680",
             "30059533",
             ]
+city = 'Ярославль'
 
 try:
     file = open("result.txt", "a")
     file.write(str(datetime.now())+"\n")
     browser.get(url=url)
     time.sleep(5)
+    # установка необходимого города
     set_city = browser.find_element(By.CLASS_NAME, 'location-text')
-    if set_city.text != "Ярославль":
+    if set_city.text != city:
         set_city.click()
         input_city = browser.find_element(By.ID, "3")
-        input_city.send_keys("Ярославль")
+        input_city.send_keys(city)
         time.sleep(5)
         input_city.send_keys(Keys.ENTER)
         time.sleep(5)
-
+    # перебор артикулов и вывод информации по ним
     for i in articuls:
         input_field = browser.find_element(By.ID, "1")
         input_field.send_keys(i)
@@ -49,7 +51,7 @@ try:
             file.write("На {} скидки нет!\n".format(title))
         browser.implicitly_wait(5)
 except Exception as ex:
-    file.write("Ошибочка: {}".format(ex))
+    file.write("Ошибка: {}".format(ex))
 finally:
     x = "-*"*15
     file.write(x)
